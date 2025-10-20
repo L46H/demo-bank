@@ -24,4 +24,15 @@ test.describe('user login to demobank', () => {
       expectedErrorMessage
     );
   });
+
+  test('unsuccessful login with too short password', async ({ page }) => {
+    const invalidPassword = 'hk';
+    const expectedErrorMessage = 'hasło ma min. 8 znaków';
+    await page.goto('/');
+    await page.getByTestId('password-input').fill(invalidPassword);
+    await page.getByTestId('password-input').blur();
+    await expect(page.getByTestId('error-login-password')).toHaveText(
+      expectedErrorMessage
+    );
+  });
 });
