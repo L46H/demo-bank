@@ -32,8 +32,6 @@ test.describe('pulpit tests', () => {
   });
 
   test('successful mobile top-up', async ({ page }) => {
-    const userId = loginData.userId;
-    const userPassword = loginData.userPassword;
     const topUpReceiver = '500 xxx xxx';
     const topUpAmount = '50';
     const expectedMessage = `Doładowanie wykonane! ${topUpAmount},00PLN na numer ${topUpReceiver}`;
