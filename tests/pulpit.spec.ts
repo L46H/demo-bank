@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
+import { loginData } from '../test-data/login.data';
 
 test.describe('pulpit tests', () => {
   let loginPage: LoginPage;
@@ -10,14 +11,14 @@ test.describe('pulpit tests', () => {
   });
 
   test('quick payment with valid data', async ({ page }) => {
-    await page.getByTestId('login-input').click();
-    await page.getByTestId('login-input').fill('testerhk');
-    await page.getByTestId('password-input').click();
-    await page.getByTestId('password-input').fill('Password123*');
+    const userId = loginData.userId;
+    const userPassword = loginData.userPassword;
+
+    await page.getByTestId('login-input').fill(userId);
+    await page.getByTestId('password-input').fill(userPassword);
     await page.getByTestId('login-button').click();
 
     await page.locator('#widget_1_transfer_receiver').selectOption('1');
-    await page.locator('#widget_1_transfer_amount').click();
     await page.locator('#widget_1_transfer_amount').fill('100');
     await page.locator('#widget_1_transfer_title').fill('uber');
     await page.locator('#widget_1_transfer_title').click();
@@ -30,14 +31,14 @@ test.describe('pulpit tests', () => {
   });
 
   test('successful mobile top-up', async ({ page }) => {
-    await page.getByTestId('login-input').click();
-    await page.getByTestId('login-input').fill('testerhk');
-    await page.getByTestId('password-input').click();
-    await page.getByTestId('password-input').fill('Password123*');
+    const userId = loginData.userId;
+    const userPassword = loginData.userPassword;
+
+    await page.getByTestId('login-input').fill(userId);
+    await page.getByTestId('password-input').fill(userPassword);
     await page.getByTestId('login-button').click();
 
     await page.locator('#widget_1_topup_receiver').selectOption('500 xxx xxx');
-    await page.locator('#widget_1_topup_amount').click();
     await page.locator('#widget_1_topup_amount').fill('50');
     await page.locator('#uniform-widget_1_topup_agreement span').click();
     await page.getByRole('button', { name: 'doładuj telefon' }).click();
