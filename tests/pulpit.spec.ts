@@ -1,17 +1,20 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
 import { loginData } from '../test-data/login.data';
+import { PulpitPage } from '../pages/pulpit.page';
 
 test.describe('pulpit tests', () => {
-  let loginPage: LoginPage;
+  let pulpitPage: PulpitPage;
 
   test.beforeEach(async ({ page }) => {
     const userId = loginData.userId;
-    const userPassword = loginData.userPassword;
-    loginPage = new LoginPage(page);
+    const userPassword = loginData.userPassword
 
     await page.goto('/');
+    const loginPage = new LoginPage(page);
+
     await loginPage.login(userId, userPassword);
+    pulpitPage = new PulpitPage(page);
   });
 
   test('quick payment with valid data', async ({ page }) => {
@@ -21,14 +24,8 @@ test.describe('pulpit tests', () => {
     const expectedReceiverTransfer = 'Jan Demobankowy';
     const expectedMessage = `Przelew wykonany! ${expectedReceiverTransfer} - ${transferAmount},00PLN - ${transferTitle}`;
 
-    await page.locator('#widget_1_transfer_receiver').selectOption(receiverId);
-    await page.locator('#widget_1_transfer_amount').fill(transferAmount);
-    await page.locator('#widget_1_transfer_title').fill(transferTitle);
-    await page.locator('#widget_1_transfer_title').click();
-    await page.getByRole('button', { name: 'wykonaj' }).click();
-    await page.getByTestId('close-button').click();
-
-    await expect(page.locator('#show_messages')).toHaveText(expectedMessage);
+    await pulpitPage.quickPayment(receiverId, transferAmount, transferTitle);
+    await expect(pulpitPage.messageText).toHaveText(expectedMessage);
   });
 
   test('successful mobile top-up', async ({ page }) => {
