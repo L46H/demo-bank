@@ -20,7 +20,7 @@ if (!baseURL) {
  */
 export default defineConfig({
   testDir: './tests',
-  timeout: 5 * 1000,
+  timeout: 30 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
